@@ -1,0 +1,1 @@
+anticheatf_check_time (Every <value> seconds there will be a check) int 5
