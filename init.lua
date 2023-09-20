@@ -2,7 +2,11 @@ local check_time = tonumber(core.settings:get("anticheatf_check_time")) or 5 -- 
 
 local suspected = {}
 
-local timer = 0
+minetest.register_on_joinplayer(function(name)
+    if suspected[name] ~= nil then
+        suspected[name] = nil
+    end
+end)
 
 local function check_fly(player)
     local name = player:get_player_name()
@@ -39,8 +43,12 @@ local function check_noclip(player)
     end
 end
 
+local timer = 0
+local timer2 = 0
+
 minetest.register_globalstep(function(dtime)
     timer = timer + dtime
+    timer2 = timer2 + dtime
     if timer >= check_time then
         timer = 0
         for _, player in ipairs(minetest.get_connected_players()) do
@@ -50,6 +58,12 @@ minetest.register_globalstep(function(dtime)
             if suspected[name] == 3 then
                 suspected[name] = 0
                 minetest.kick_player(name, "You was suspected of using cheats (AntiCheat)")
+            end
+            if timer2 >= 60 then
+                timer2 = 0
+                if suspected[name] ~= nil or suspected[name] ~= 0 then
+                    suspected[name] = 0
+                end
             end
         end
     end
