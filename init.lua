@@ -2,7 +2,7 @@ local check_time = tonumber(core.settings:get("anticheatf_check_time")) or 5 -- 
 
 local suspected = {}
 
-minetest.register_on_joinplayer(function(name)
+minetest.register_on_leaveplayer(function(name)
     if suspected[name] ~= nil then
         suspected[name] = nil
     end
